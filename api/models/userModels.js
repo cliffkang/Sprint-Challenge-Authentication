@@ -26,8 +26,11 @@ UserSchema.pre('save', function(next) {
   // if there is an error here you'll need to handle it by calling next(err);
   // Once the password is encrypted, call next() so that your userController and create a user
   const user = this;
+  // console.log(user.isModified('password'));
+  // console.log(user.password);
   if (!user.isModified('password')) return next();
-  bcyrpt.hash(user.password, SALT_ROUNDS, function(error, hash) {
+  bcrypt.hash(user.password, SALT_ROUNDS, function(error, hash) {
+    console.log('gets here');
     if (error) return next(error);
     user.password = hash;
     next();
