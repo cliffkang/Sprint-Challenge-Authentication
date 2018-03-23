@@ -3,7 +3,8 @@ const { mysecret } = require('../../config');
 const User = require('../models/userModels');
 
 const login = (req, res) => {
-  const { username, password } = req.body;
+  let { username, password } = req.body;
+  username = username.toLowerCase();
   User.findOne({ username }, (err, user) => {
     if (err) {
       res.status(403).json({ error: 'Invalid Username/Password' });
@@ -24,6 +25,7 @@ const login = (req, res) => {
           username: user.username
         }; // what will determine our payload.
         const token = jwt.sign(payload, mysecret); // creates our JWT with a secret and a payload and a hash.
+        localStorage.setItem('token', token);
         res.json({ token }); // sends the token back to the client
       }
     });

@@ -1,9 +1,16 @@
 const fetch = require('node-fetch');
 
 const getAllJokes = (req, res) => {
+  const token = localStorage.getItem('token');
+  console.log(req.decoded);
   if (req.decoded) {
     fetch(
-      'https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_ten'
+      'https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_ten',
+      {
+        headers: new Headers({
+          'Authorization': token,
+        })
+      }
     )
       .then(p => p.json())
       .then(jokes => res.json(jokes))
